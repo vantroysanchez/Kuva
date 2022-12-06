@@ -8,6 +8,6 @@ namespace Application.Headers.Queries.Gets
 {
     public class HeaderVm
     {
-        public IList<HeaderDto> Lists { get; set; } = new List<HeaderDto>();
+        public IList<HeaderDto> Lists { get; set; } = new List<HeaderDto>();        
     }
 }

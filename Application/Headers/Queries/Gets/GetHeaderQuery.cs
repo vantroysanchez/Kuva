@@ -32,7 +32,7 @@ namespace Application.Headers.Queries.Gets
                 Lists = await _context.Headers
                 .AsNoTracking()
                 .ProjectTo<HeaderDto>(_mapper.ConfigurationProvider)
-                .OrderBy(t => t.Code)
+                .OrderBy(t => t.Code)                
                 .ToListAsync(cancellationToken)
             };
         }

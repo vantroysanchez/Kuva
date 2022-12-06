@@ -37,9 +37,7 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
             {
                 _logger.LogError("Han ocurrido errores de validaciones");
                 throw new ValidationException(failures);                
-            }    
-
-            _logger.LogInformation("Validaciones correctas");
+            }            
         }
         return await next();
     }

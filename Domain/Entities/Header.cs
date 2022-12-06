@@ -16,25 +16,24 @@ namespace Domain.Entities
         public string? Description { get; set; }
         public DateTime Date { get; set; }
         public decimal TotalAmount { get; set; }
-        public bool Status { get; set; }
+        //public bool Status { get; set; }
 
-        [NotMapped]
-        private bool _done;
-        [NotMapped]
-        public bool Done
+        private bool _status;
+
+        public bool Status
         {
-            get => _done;
+            get => _status;
             set
             {
-                if (value == true && _done == false)
+                if (value == true && _status == false)
                 {
                     AddDomainEvent(new HeaderCompletedEvent(this));
                 }
 
-                _done = value;
+                _status = value;
             }
         }
 
-        public virtual ICollection<Detail>? Detail { get; set; }
+        public ICollection<Detail>? Details { get; set; }
     }
 }

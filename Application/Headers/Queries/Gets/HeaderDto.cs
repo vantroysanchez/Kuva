@@ -12,7 +12,7 @@ namespace Application.Headers.Queries.Gets
     {
         public HeaderDto()
         {
-            Items = new List<DetailDto>();
+            Details = new List<DetailDto>();
         }
 
         public int Code { get; set; }
@@ -21,6 +21,6 @@ namespace Application.Headers.Queries.Gets
         public decimal TotalAmount { get; set; }
         public bool Status { get; set; }
 
-        public List<DetailDto> Items { get; set; }
+        public List<DetailDto> Details { get; set; }
     }
 }

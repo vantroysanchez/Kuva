@@ -12,7 +12,7 @@ namespace WebUI.Controllers
             return await Mediator.Send(new GetWeatherForecastsQuery());
         }
 
-        [HttpGet("WeatherWithPagination")]
+        [HttpGet("GetWeatherWithPagination")]
         public async Task<ActionResult<PaginatedList<WeatherForecast>>> GetWeatherForecastWithPagination([FromQuery] GetWeatherForecastsWithPaginationQuery query)
         {
             return await Mediator.Send(query);

@@ -20,7 +20,7 @@ namespace Application.Headers.EventHandlers
 
         public Task Handle(HeaderDeletedEvent notification, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("University Domain Event: {DomainEvent}", notification.GetType().Name);
+            _logger.LogInformation("Kuva Domain Event: {DomainEvent}", notification.GetType().Name);
 
             return Task.CompletedTask;
         }
