@@ -2,13 +2,17 @@
 using Application.Headers.Commands.Delete;
 using Application.Headers.Commands.Update;
 using Application.Headers.Queries.Gets;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers
 {
+    [Authorize]
     public class HeaderController : ApiControllerBase
     {
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<HeaderVm>> Get()
         {
             return await Mediator.Send(new GetHeaderQuery());

@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Services;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure
 {
@@ -25,7 +27,20 @@ namespace Infrastructure
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
+            services.AddScoped<ApplicationDbContextInitialiser>();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
             services.AddTransient<IDateTime, DateTimeService>();
+            services.AddTransient<IIdentityService, IdentityService>();
+
+            services.AddCors(opt =>
+            {
+                opt.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
 
             return services;
         }

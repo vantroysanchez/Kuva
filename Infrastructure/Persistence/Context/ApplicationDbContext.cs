@@ -1,8 +1,10 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using Infrastructure.Common;
+using Infrastructure.Identity;
 using Infrastructure.Persistence.Interceptors;
 using MediatR;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Context
 {
-    public class ApplicationDbContext: DbContext, IApplicationDbContext
+    public class ApplicationDbContext: IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         private readonly IMediator _mediator;
         private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;

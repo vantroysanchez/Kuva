@@ -1,8 +1,9 @@
 ﻿using Application.Common.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace WebUI.Services
-{
+{    
     public class CurrentUserService : ICurrentUserService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -13,5 +14,7 @@ namespace WebUI.Services
         }
 
         public string? UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+                
+        public string? Email => _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
     }
 }
