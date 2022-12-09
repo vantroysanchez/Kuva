@@ -1,9 +1,12 @@
 ﻿using Application.Common.Interfaces;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using WebUI.Attributes;
 using WebUI.Filters;
 using WebUI.Services;
 
@@ -38,6 +41,18 @@ namespace WebUI
             // Customise default API behaviour
             services.Configure<ApiBehaviorOptions>(options =>
                 options.SuppressModelStateInvalidFilter = true);
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("AdminAccess", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.Requirements.Add(new AdminAccessAttribute());
+                });                              
+            });
+
+            services.AddSingleton<IAuthorizationHandler, AdminAccessHandler>();
 
             return services;
         }

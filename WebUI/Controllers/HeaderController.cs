@@ -8,17 +8,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]    
     public class HeaderController : ApiControllerBase
     {
-        [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet]              
         public async Task<ActionResult<HeaderVm>> Get()
         {
             return await Mediator.Send(new GetHeaderQuery());
         }
 
         [HttpPost]
+        [Authorize("AdminAccess")]
         public async Task<ActionResult<int>> Create(CreateHeaderCommand command)
         {
             return await Mediator.Send(command);

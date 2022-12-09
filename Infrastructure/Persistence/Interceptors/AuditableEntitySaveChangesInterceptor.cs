@@ -46,13 +46,13 @@ namespace Infrastructure.Persistence.Interceptors
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedBy = _currentUserService.UserId;
+                    entry.Entity.CreatedBy = _currentUserService.Email;
                     entry.Entity.Created = _dateTime.Now;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
-                    entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                    entry.Entity.LastModifiedBy = _currentUserService.Email;
                     entry.Entity.LastModified = _dateTime.Now;
                 }
             }

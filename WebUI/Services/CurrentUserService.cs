@@ -16,5 +16,7 @@ namespace WebUI.Services
         public string? UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
                 
         public string? Email => _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Email);
+
+        public string? Roles => _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Role);
     }
 }

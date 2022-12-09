@@ -10,5 +10,6 @@ namespace Application.Common.Interfaces
     {
         string? UserId { get; }
         string? Email { get;  }
+        string? Roles { get; }
     }
 }

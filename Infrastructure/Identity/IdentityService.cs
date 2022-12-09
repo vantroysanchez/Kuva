@@ -24,20 +24,20 @@ namespace Infrastructure.Identity
         private readonly IAuthorizationService _authorizationService;
         private readonly IConfiguration _configuration;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ICurrentUserService _currentUserService;
+        private RoleManager<IdentityRole> _roleManager;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
             IAuthorizationService authorizationService, IConfiguration configuration,
-            SignInManager<ApplicationUser> signInManager, ICurrentUserService currentUserService)
+            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
             _authorizationService = authorizationService;
             _configuration = configuration;
             _signInManager = signInManager;
-            _currentUserService = currentUserService;
+            _roleManager = roleManager;
         }
 
         public async Task<string> GetUserNameAsync(string userId)
@@ -72,12 +72,26 @@ namespace Infrastructure.Identity
             return user.Id;
         }
 
+        private async Task<bool> ValidateRoles(string userName)
+        {
+            var user = await _userManager.FindByEmailAsync(userName);
+
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Administrator");
+
+            return isAdmin;
+        }
+
         private AuthenticationAnswer CreateToken(string userName)
         {
             var claims = new List<Claim>()
             {
-                new Claim("email",userName)
+                new Claim("email", userName)
             };
+
+            if (ValidateRoles(userName).Result)
+            {
+                claims.Add(new Claim("role", "Administrator"));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["KeyJwt"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
