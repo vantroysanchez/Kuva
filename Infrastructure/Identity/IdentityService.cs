@@ -24,13 +24,15 @@ namespace Infrastructure.Identity
         private readonly IAuthorizationService _authorizationService;
         private readonly IConfiguration _configuration;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private RoleManager<IdentityRole> _roleManager;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
             IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
             IAuthorizationService authorizationService, IConfiguration configuration,
-            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
@@ -38,6 +40,7 @@ namespace Infrastructure.Identity
             _configuration = configuration;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<string> GetUserNameAsync(string userId)
@@ -108,23 +111,34 @@ namespace Infrastructure.Identity
 
             if (authenticationAnswer.Token.Any() && authenticationAnswer.Expiration.HasValue)
             {
+
+                _httpContextAccessor.HttpContext?.Response.Cookies.Append("token", authenticationAnswer.Token,
+                    new CookieOptions
+                    {
+                        Expires = authenticationAnswer.Expiration.Value,
+                        Secure = true,
+                        HttpOnly = true,
+                        IsEssential = true,
+                        SameSite = SameSiteMode.None
+                    });
+
                 return new AuthenticationAnswer()
                 {
-                    Token = new JwtSecurityTokenHandler().WriteToken(securityToken),
-                    Expiration = expirationToken
+                    Token =authenticationAnswer.Token,
+                    Expiration = authenticationAnswer.Expiration
                 };
             }
 
             return new AuthenticationAnswer()
             {
-                Token = "Incorrects values",
+                Token = "Fail",
                 Expiration = null
             };
         }
 
         public JsonResult RefreshToken(string? UserName)
         {
-            string Token = string.Empty;
+            string Token = "Fail";
             DateTime? Expiration = null;
 
             if (!string.IsNullOrEmpty(UserName))
@@ -133,8 +147,7 @@ namespace Infrastructure.Identity
             }
 
             return new JsonResult(
-            
-                Token = "Not exist currentUser",
+                Token,
                 Expiration
             );
         }

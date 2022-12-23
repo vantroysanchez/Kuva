@@ -21,14 +21,30 @@ namespace WebUI
             services.AddHttpContextAccessor();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(opc => opc.TokenValidationParameters = new TokenValidationParameters
+            .AddCookie(c =>
             {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["KeyJwt"])),
-                ClockSkew = TimeSpan.Zero
+                c.Cookie.Name = "token";
+            })
+            .AddJwtBearer(opc => {
+                opc.SaveToken = true;
+                opc.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["KeyJwt"])),
+                    ClockSkew = TimeSpan.Zero
+
+                };
+                opc.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["token"];
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             services.AddControllersWithViews(options =>
