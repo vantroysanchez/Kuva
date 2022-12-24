@@ -20,12 +20,17 @@ namespace WebUI
 
             services.AddHttpContextAccessor();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication( x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddCookie(c =>
             {
                 c.Cookie.Name = "token";
             })
             .AddJwtBearer(opc => {
+                opc.RequireHttpsMetadata = false;
                 opc.SaveToken = true;
                 opc.TokenValidationParameters = new TokenValidationParameters
                 {

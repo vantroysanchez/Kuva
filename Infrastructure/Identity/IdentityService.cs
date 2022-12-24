@@ -116,8 +116,8 @@ namespace Infrastructure.Identity
                     new CookieOptions
                     {
                         Expires = authenticationAnswer.Expiration.Value,
-                        Secure = true,
                         HttpOnly = true,
+                        Secure = true,                        
                         IsEssential = true,
                         SameSite = SameSiteMode.None
                     });
