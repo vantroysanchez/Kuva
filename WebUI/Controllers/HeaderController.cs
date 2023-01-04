@@ -1,6 +1,7 @@
 ﻿using Application.Headers.Commands.Create;
 using Application.Headers.Commands.Delete;
 using Application.Headers.Commands.Update;
+using Application.Headers.Queries.GetOnly;
 using Application.Headers.Queries.Gets;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]    
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]    
     public class HeaderController : ApiControllerBase
     {
         [HttpGet]              
@@ -17,8 +18,14 @@ namespace WebUI.Controllers
             return await Mediator.Send(new GetHeaderQuery());
         }
 
+        [HttpGet("GetHeaderOnly")]
+        public async Task<ActionResult<List<HeaderOnlyDto>>> GetHeaderOnly()
+        {
+            return await Mediator.Send(new GetOnlyHeaderQuery());
+        }
+
         [HttpPost]
-        [Authorize("AdminAccess")]
+        //[Authorize("AdminAccess")]
         public async Task<ActionResult<int>> Create(CreateHeaderCommand command)
         {
             return await Mediator.Send(command);
