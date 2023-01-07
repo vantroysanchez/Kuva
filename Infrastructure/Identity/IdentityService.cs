@@ -59,7 +59,7 @@ namespace Infrastructure.Identity
                 return new JsonResult(CreateToken(userName));
             }
 
-            return new JsonResult(result.ToString());
+            return new JsonResult( new { Token = "401", Expiration = "401" });
         }
 
         public async Task<string> CreateUserAsync(string userName, string password)
