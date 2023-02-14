@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Vantroy E. Sanchez P.",
+    "classifications": [
+        "Web",
+        "WebAPI"
+    ],
+    "identity": "WebAPI.Custom.Template",
+    "name": "Initial WebAPI proyect with Clean Architecture",
+    "description": "This is a basic template of a WebAPI with Clean Architecture and JWT.",
+    "shortName": "webapicustomtemplate",
+    "sourceName": "Kuva",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "preferNameDirectory": true
+}
