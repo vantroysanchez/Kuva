@@ -35,5 +35,5 @@ dotnet new uninstall
 Crear nuevo proyecto basado en el template:
 
 ```sh
-dotnet new webapicustomtemplate -o "NombrePersonalizado"
+dotnet new webapicqrs -o "NombrePersonalizado"
 ```
