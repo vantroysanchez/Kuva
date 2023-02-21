@@ -5,10 +5,10 @@
         "Web",
         "WebAPI"
     ],
-    "identity": "WebAPI.Custom.Template",
-    "name": "VS WebAPI Clean Architecture",
+    "identity": "WebAPI.CQRS",
+    "name": "VS WebAPI CQRS",
     "description": "This is a basic template of a WebAPI with Clean Architecture and JWT.",
-    "shortName": "webapicustomtemplate",
+    "shortName": "webapicqrs",
     "sourceName": "Kuva",
     "tags": {
         "language": "C#",
